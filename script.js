@@ -18,7 +18,7 @@ const ws = new WebSocket("ws://localhost:8765");
         if (!text) return;
 
         const message = {
-            sender: "Вы",
+            sender: "Ч",
             recipient: currentRecipient,
             text: text,
             time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
