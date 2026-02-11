@@ -15,7 +15,7 @@
         /* Список контактов */
         .contacts {
             width: 200px;
-            background: #2c3e50;
+            background: #007056;
             color: white;
             border-radius: 8px;
             padding: 10px;
@@ -55,7 +55,7 @@
         }
 
         .chat-header {
-            background: #3498db;
+            background: #00d970;
             color: white;
             padding: 10px 15px;
             border-radius: 8px 8px 0 0;
