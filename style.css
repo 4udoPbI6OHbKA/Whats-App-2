@@ -1,6 +1,6 @@
  body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: link("hqdefault.jpg");
+            background-image: url("https://yandex.ru/images/search?pos=2&from=tabbar&img_url=https%3A%2F%2Fstatic.okko.tv%2Fimages%2Fv4%2Ff9318783-a3bb-4f0b-9ee8-789b2334af2d%3FpresetId%3D4000%26amp%3Bwidth%3D1200%26amp%3Bheight%3D630%26amp%3Bscale%3D1%26amp%3Bquality%3D80&text=остров+сокровищ&rpt=simage&lr=213");
             margin: 0;
             padding: 20px;
         }
