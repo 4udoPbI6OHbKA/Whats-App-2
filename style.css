@@ -1,6 +1,6 @@
  body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: url('hqdefault.jpg');
+            background-image: link("hqdefault.jpg");
             margin: 0;
             padding: 20px;
         }
