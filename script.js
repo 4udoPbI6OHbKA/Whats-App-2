@@ -1,5 +1,5 @@
 const ws = new WebSocket("ws://localhost:8765");
-    let currentRecipient = "Друг";
+    let currentRecipient = "Друн";
 
     function setRecipient(name) {
         currentRecipient = name;
