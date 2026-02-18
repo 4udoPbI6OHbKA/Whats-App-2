@@ -24,10 +24,10 @@ const ws = new WebSocket("ws://localhost:8765");
             time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
         };
 
-        // Отправляем на сервер
+
         ws.send(JSON.stringify(message));
 
-        // Добавляем своё сообщение
+
         addMessage(message, true);
 
         input.value = "";
@@ -42,13 +42,13 @@ const ws = new WebSocket("ws://localhost:8765");
         messages.scrollTop = messages.scrollHeight;
     }
 
-    // Принимаем сообщения
+
     ws.onmessage = function(event) {
         const data = JSON.parse(event.data);
         addMessage(data, false);
     };
 
-    // Приветствие
+    
     setTimeout(() => {
         addMessage({ sender: "Система", text: "Вы подключены к чату", time: "только что" }, false);
     }, 500);

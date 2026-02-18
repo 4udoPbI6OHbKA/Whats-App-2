@@ -1,9 +1,27 @@
  body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-image: url("images/hqdefault.jpg");
+            background-size: cover; 
             margin: 0;
             padding: 20px;
         }
+
+        .title {
+            width: 1000px;
+            height: 100px;
+            background: #015b45;
+            color: white;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px auto;
+        }
+
+        .title h1 {
+            font-family: 'Jazz LET', fantasy;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
 
         .container {
             display: flex;
@@ -12,7 +30,7 @@
             gap: 15px;
         }
 
-        /* Список контактов */
+
         .contacts {
             width: 200px;
             background: #007056;
@@ -44,7 +62,7 @@
             margin-right: 8px;
         }
 
-        /* Окно чата */
+
         .chat {
             flex: 1;
             background: white;

@@ -2,26 +2,27 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Аська-чат</title>
+    <title>Whats App2</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
 
     
 </head>
 <body>
+    
+<div class="title">
+    <h1>Whats App 2</h1>
+</div>
 
 <div class="container">
-    <!-- Список контактов -->
+
     <div class="contacts">
         <h3>Контакты</h3>
-        <div class="contact online" onclick="setRecipient('Друн')">Друн</div>
-        <div class="contact online" onclick="setRecipient('Поющая пальма')">Поющая пальма</div>
-        <div class="contact" onclick="setRecipient('Мама Нолана')">Мама Нолана</div>
+        <div class="contact online" onclick="setRecipient('с собой')">себе</div>
     </div>
 
-    <!-- Окно чата -->
     <div class="chat">
-        <div class="chat-header">Чат с <span id="recipient">Друг</span></div>
+        <div class="chat-header">Чат с <span id="recipient"></span></div>
         <div id="messages" class="messages"></div>
         <div class="input-area">
             <input type="text" id="message-input" placeholder="Напишите сообщение..." onkeypress="handleEnter(event)">
