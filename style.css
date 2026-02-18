@@ -1,20 +1,9 @@
  body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-image: url("images/hqdefault.jpg");
+            background-size: cover; 
             margin: 0;
             padding: 20px;
-        }
-
-        .status-bar {
-            background: #333;
-            color: white;
-            padding: 5px 10px;
-            text-align: right;
-            font-size: 14px;
-        }
-        #connection-status {
-            font-weight: bold;
-            color: #e74c3c;
         }
 
         .title {
@@ -31,10 +20,6 @@
         .title img {
             width: 13%;
             height: auto;
-
-
-
-
         }
 
         .title h1 {
@@ -54,6 +39,18 @@
         }
         .settings:hover {
             color: #34495e;
+        }
+
+        .status-bar {
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            text-align: right;
+            font-size: 14px;
+        }
+        #connection-status {
+            font-weight: bold;
+            color: #e74c3c;
         }
 
         .container {
@@ -94,6 +91,7 @@
             margin-right: 8px;
         }
 
+        /* Окно чата */
         .chat {
             flex: 1;
             background: white;
