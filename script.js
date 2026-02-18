@@ -1,54 +1,105 @@
-const ws = new WebSocket("ws://localhost:8765");
-    let currentRecipient = "Друн";
+// Подключаемся к серверу
+const socket = io({
+    transports: ['websocket', 'polling'],
+    reconnection: true,
+    reconnectionAttempts: 10,
+    reconnectionDelay: 1000
+});
 
-    function setRecipient(name) {
-        currentRecipient = name;
-        document.getElementById("recipient").textContent = name;
+let currentRecipient = "себе";
+
+// Элементы DOM
+const messagesDiv = document.getElementById('messages');
+const recipientSpan = document.getElementById('recipient');
+const connectionStatus = document.getElementById('connection-status');
+const messageInput = document.getElementById('message-input');
+
+// Устанавливаем получателя по умолчанию
+if (recipientSpan) {
+    recipientSpan.textContent = currentRecipient;
+}
+
+// Подключение к серверу
+socket.on('connect', function() {
+    console.log('Подключено к серверу');
+    if (connectionStatus) {
+        connectionStatus.textContent = 'Онлайн';
+        connectionStatus.style.color = '#2ecc71';
     }
+    addMessage({
+        sender: 'Система',
+        text: 'Вы подключены к чату',
+        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+    }, false);
+});
 
-    function handleEnter(event) {
-        if (event.key === "Enter") {
-            sendMessage();
-        }
+socket.on('disconnect', function() {
+    console.log('Отключено от сервера');
+    if (connectionStatus) {
+        connectionStatus.textContent = 'Офлайн';
+        connectionStatus.style.color = '#e74c3c';
     }
+});
 
-    function sendMessage() {
-        const input = document.getElementById("message-input");
-        const text = input.value.trim();
-        if (!text) return;
-
-        const message = {
-            sender: "Ч",
-            recipient: currentRecipient,
-            text: text,
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-        };
-
-
-        ws.send(JSON.stringify(message));
-
-
-        addMessage(message, true);
-
-        input.value = "";
+socket.on('connect_error', function(error) {
+    console.error('Ошибка подключения:', error);
+    if (connectionStatus) {
+        connectionStatus.textContent = 'Ошибка';
+        connectionStatus.style.color = '#f39c12';
     }
+});
 
-    function addMessage(data, isOwn) {
-        const messages = document.getElementById("messages");
-        const msg = document.createElement("div");
-        msg.className = `message ${isOwn ? 'own' : 'their'}`;
-        msg.innerHTML = `<b>${data.sender}</b> (${data.time})<br>${data.text}`;
-        messages.appendChild(msg);
-        messages.scrollTop = messages.scrollHeight;
+// Получение сообщений
+socket.on('message', function(data) {
+    console.log('Получено сообщение:', data);
+    addMessage(data, false);
+});
+
+function setRecipient(name) {
+    currentRecipient = name;
+    if (recipientSpan) {
+        recipientSpan.textContent = name;
     }
+}
 
+function handleEnter(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
 
-    ws.onmessage = function(event) {
-        const data = JSON.parse(event.data);
-        addMessage(data, false);
-    };
-
+function sendMessage() {
+    if (!messageInput) return;
     
-    setTimeout(() => {
-        addMessage({ sender: "Система", text: "Вы подключены к чату", time: "только что" }, false);
-    }, 500);
+    const text = messageInput.value.trim();
+    
+    if (!text) return;
+    
+    const message = {
+        sender: 'Я',
+        recipient: currentRecipient,
+        text: text,
+        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+    };
+    
+    // Отправляем на сервер
+    socket.emit('message', message);
+    
+    // Показываем в чате
+    addMessage(message, true);
+    
+    // Очищаем поле ввода
+    messageInput.value = '';
+}
+
+function addMessage(data, isOwn) {
+    if (!messagesDiv) return;
+    
+    const messageElement = document.createElement('div');
+    messageElement.className = `message ${isOwn ? 'own' : 'their'}`;
+    messageElement.innerHTML = `<b>${data.sender}</b> (${data.time})<br>${data.text}`;
+    messagesDiv.appendChild(messageElement);
+    
+    // Прокручиваем вниз
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}

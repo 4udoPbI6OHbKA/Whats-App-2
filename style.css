@@ -1,13 +1,25 @@
  body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-image: url("images/hqdefault.jpg");
-            background-size: cover; 
             margin: 0;
             padding: 20px;
         }
 
+        .status-bar {
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            text-align: right;
+            font-size: 14px;
+        }
+        #connection-status {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
         .title {
-            width: 1000px;
+            display: flex;
+            width: 980px;
             height: 100px;
             background: #015b45;
             color: white;
@@ -16,12 +28,33 @@
             margin: 10px auto;
         }
 
-        .title h1 {
-            font-family: 'Jazz LET', fantasy;
-            text-align: center;
-            margin-bottom: 15px;
+        .title img {
+            width: 13%;
+            height: auto;
+
+
+
+
         }
 
+        .title h1 {
+            color:transparent;
+            background-image:url(https://cdn1.ozone.ru/s3/multimedia-d/6703123153.jpg);
+            -webkit-background-clip: text;
+            font-family: 'Brush Script MT', cursive;
+            text-align: center;
+            font-size: 90px;
+            align-items: center;
+            margin: auto;
+            border: 10px solid #3498db00;
+        }
+        .settings{
+            cursor: pointer;
+            
+        }
+        .settings:hover {
+            color: #34495e;
+        }
 
         .container {
             display: flex;
@@ -29,7 +62,6 @@
             margin: 0 auto;
             gap: 15px;
         }
-
 
         .contacts {
             width: 200px;
@@ -61,7 +93,6 @@
             color: #2ecc71;
             margin-right: 8px;
         }
-
 
         .chat {
             flex: 1;
