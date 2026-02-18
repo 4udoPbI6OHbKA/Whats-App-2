@@ -21,9 +21,10 @@ async def chat_handler(websocket):
         clients.discard(websocket)  # discard() не вызывает ошибку если нет в множестве
 
 async def main():
-    async with websockets.serve(chat_handler, "localhost", 8765):
-        print("Сервер запущен на ws://localhost:8765")
-        await asyncio.Future()  # Бесконечное ожидание
+    async with websockets.serve(chat_handler, "0.0.0.0", 8765):
+        print("Сервер запущен на ws://0.0.0.0:8765 (доступен извне)")
+        await asyncio.Future()
+
 
 if __name__ == "__main__":
     asyncio.run(main())
