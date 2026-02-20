@@ -144,6 +144,7 @@ body {
 
 /* Окно чата */
 .chat {
+    width: 1000px;
     flex: 1;
     background: white;
     border-radius: 8px;
