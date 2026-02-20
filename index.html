@@ -2,39 +2,220 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Whats App2</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-
-</head>
+</head> 
 <body>
-    
-<div class="status-bar">
-    Статус: <span id="connection-status">Офлайн</span>
-</div>
-
-<div class="title">
-    <img src="https://media1.tenor.com/m/RcssGAbGTGEAAAAC/elephant-run.gif" alt=""></img>
-    <h1>Whats App 2</h1>
-</div>
-
-<div class="container">
-
-    <div class="contacts">
-        <h3>Контакты</h3>
-        <div class="contact online" onclick="setRecipient('с собой')">себе</div>
+    <div class="status-bar">
+        Статус: <span id="connection-status" class="waiting">Ожидание регистрации...</span>
     </div>
 
-    <div class="chat">
-        <div class="chat-header">Чат с <span id="recipient"></span></div>
-        <div id="messages" class="messages"></div>
-        <div class="input-area">
-            <input type="text" id="message-input" placeholder="Напишите сообщение..." onkeypress="handleEnter(event)">
-            <button onclick="sendMessage()">Отправить</button>
+    <div class="title">
+        <img src="https://media1.tenor.com/m/RcssGAbGTGEAAAAC/elephant-run.gif" alt="Логотип">
+        <h1>Whats App 2</h1>
+    </div>
+
+    <div class="container">
+        <div class="contacts">
+            <h3>Контакты</h3>
+            <div class="contact online" onclick="setRecipient('себе')">себе</div>
+        </div>
+
+        <div class="chat">
+            <div class="chat-header">Чат с <span id="recipient">Все</span></div>
+            <div id="messages" class="messages"></div>
+            <div class="input-area">
+                <input type="text" id="message-input" placeholder="Напишите сообщение..." disabled>
+                <button onclick="sendMessage()" disabled>➤</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="script.js"></script>
+    <!-- JavaScript остается тот же -->
+    <script>
+        // [Весь JavaScript код из предыдущего ответа остается без изменений]
+        class ChatAuth {
+            constructor() {
+                this.userName = localStorage.getItem('chatUserName') || null;
+                this.init();
+            }
+
+            init() {
+                if (!this.isRegistered()) {
+                    this.showRegistrationModal();
+                } else {
+                    this.startChat();
+                }
+            }
+
+            isRegistered() {
+                return this.userName !== null && this.userName.trim() !== '';
+            }
+
+            showRegistrationModal() {
+                const modalHTML = `
+                    <div class="auth-modal-overlay" id="auth-modal">
+                        <div class="auth-modal">
+                            <h2>👋 Добро пожаловать!</h2>
+                            <p style="color: #666; margin-bottom: 20px;">Введите ваше имя для чата</p>
+                            <input type="text" id="username-input" placeholder="Ваше имя" maxlength="20" autofocus>
+                            <button id="register-btn">Начать чат</button>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+                const usernameInput = document.getElementById('username-input');
+                const registerBtn = document.getElementById('register-btn');
+                const modal = document.getElementById('auth-modal');
+
+                registerBtn.onclick = () => {
+                    const name = usernameInput.value.trim();
+                    if (name && name.length >= 2) {
+                        this.register(name);
+                    } else {
+                        alert('Имя должно содержать минимум 2 символа');
+                        usernameInput.focus();
+                    }
+                };
+
+                usernameInput.onkeypress = (e) => {
+                    if (e.key === 'Enter') registerBtn.click();
+                };
+
+                modal.onclick = (e) => {
+                    if (e.target === modal) modal.remove();
+                };
+            }
+
+            register(name) {
+                this.userName = name;
+                localStorage.setItem('chatUserName', name);
+                document.getElementById('auth-modal').remove();
+                this.startChat();
+            }
+
+            startChat() {
+                window.myUserName = this.userName;
+                initChat();
+            }
+
+            getUserName() {
+                return this.userName;
+            }
+        }
+
+        const chatAuth = new ChatAuth();
+
+        let socket, mySocketId, messageQueue = new Set(), currentRecipient = 'Все';
+
+        function initChat() {
+            socket = io({
+                transports: ['websocket', 'polling'],
+                reconnection: true,
+                reconnectionAttempts: 10,
+                reconnectionDelay: 1000
+            });
+
+            const connectionStatus = document.getElementById('connection-status');
+            const messageInput = document.getElementById('message-input');
+            const sendBtn = document.querySelector('.input-area button');
+
+            messageInput.disabled = false;
+            sendBtn.disabled = false;
+            connectionStatus.className = 'waiting';
+
+            socket.on('connect', () => {
+                mySocketId = socket.id;
+                console.log('✅ Подключено:', mySocketId, window.myUserName);
+                
+                socket.emit('registerUser', {
+                    socketId: mySocketId,
+                    userName: window.myUserName
+                });
+
+                connectionStatus.textContent = 'Онлайн';
+                connectionStatus.className = 'online';
+                
+                addMessage({
+                    senderName: 'Система',
+                    text: `Добро пожаловать, ${window.myUserName}! 🎉`,
+                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+                }, false);
+            });
+
+            socket.on('message', (data) => {
+                if (data.id && messageQueue.has(data.id)) {
+                    messageQueue.delete(data.id);
+                    return;
+                }
+                if (data.senderId === mySocketId) return;
+                
+                addMessage(data, false);
+            });
+
+            socket.on('disconnect', () => {
+                connectionStatus.textContent = 'Офлайн';
+                connectionStatus.className = '';
+            });
+        }
+
+        window.setRecipient = function(name) {
+            currentRecipient = name;
+            document.getElementById('recipient').textContent = name;
+        }
+
+        window.sendMessage = function() {
+            const messageInput = document.getElementById('message-input');
+            const text = messageInput.value.trim();
+            if (!text || !window.myUserName) return;
+
+            const messageId = Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            const message = {
+                id: messageId,
+                senderId: mySocketId,
+                senderName: window.myUserName,
+                recipient: currentRecipient,
+                text: text,
+                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+            };
+
+            messageQueue.add(messageId);
+            socket.emit('message', message);
+            addMessage(message, true);
+            messageInput.value = '';
+        }
+
+        window.addMessage = function(data, isOwn) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isOwn ? 'own' : 'their'}`;
+
+            messageDiv.innerHTML = `
+                <div style="font-size: 12px; color: ${isOwn ? '#fff' : '#667781'}; margin-bottom: 4px;">
+                    ${data.senderName}
+                </div>
+                ${data.text}
+                <div style="font-size: 11px; color: ${isOwn ? '#e8f5e8' : '#919191'}; margin-top: 4px;">
+                    ${data.time}
+                </div>
+            `;
+
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const messageInput = document.getElementById('message-input');
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
