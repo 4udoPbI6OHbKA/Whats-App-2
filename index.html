@@ -8,31 +8,45 @@
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 </head> 
 <body>
-    <!-- HTML остается тот же -->
+    
     <div class="status-bar">
-        Статус: <span id="connection-status" class="waiting">Ожидание регистрации...</span>
+    Статус: <span id="connection-status">Офлайн</span>
+</div>
+
+<div class="interface">
+
+<div class="main-interface">
+
+<div class="title">
+    <img src="https://media1.tenor.com/m/RcssGAbGTGEAAAAC/elephant-run.gif" alt=""></img>
+    <h1>Whats App 2</h1>
+    <div class="settings-button"></div>
+</div>
+
+<div class="container">
+
+    <div class="contacts">
+        <h3>Контакты</h3>
+        <div class="contact online" onclick="setRecipient(' Общий')">Общий чат</div>
     </div>
 
-    <div class="title">
-        <img src="https://media1.tenor.com/m/RcssGAbGTGEAAAAC/elephant-run.gif" alt="Логотип">
-        <h1>Whats App 2</h1>
-    </div>
-
-    <div class="container">
-        <div class="contacts">
-            <h3>Контакты</h3>
-            <div class="contact online" onclick="setRecipient('себе')">себе</div>
+    <div class="chat">
+        <div class="chat-header">Чат<span id="recipient"></span></div>
+        <div id="messages" class="messages"></div>
+        <div class="input-area">
+            <input type="text" id="message-input" placeholder="Напишите сообщение..." onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()">Отправить</button>
         </div>
-
-        <div class="chat">
-            <div class="chat-header">Чат с <span id="recipient">Все</span></div>
-            <div id="messages" class="messages"></div>
-            <div class="input-area">
-                <input type="text" id="message-input" placeholder="Напишите сообщение..." disabled>
-                <button onclick="sendMessage()" disabled>➤</button>
-            </div>
-        </div>
     </div>
+</div>
+
+</div>
+
+<div class="settings-menu">
+    <h1>Приблуды</h1>
+</div>
+
+</div>
 
 
 <!-- JavaScript с новой функцией addMessage -->
