@@ -41,10 +41,10 @@ body {
     background-image:url(https://cdn1.ozone.ru/s3/multimedia-d/6703123153.jpg);
     -webkit-background-clip: text;
     font-family: 'Brush Script MT', cursive;
-    text-align: center;
     font-size: 90px;
     align-items: center;
-    margin: auto;
+    margin:auto;
+    margin-top: -20px;
     border: 10px solid #3498db00;
 }
 
