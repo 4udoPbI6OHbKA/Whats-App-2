@@ -7,6 +7,20 @@ body {
     padding: 20px;
 }
 
+.interface{
+            display: flex;
+            max-width: 1250px; 
+            margin: 0 auto; 
+            gap: 15px; 
+}
+
+.main-interface{
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+}
+
 .title {
     display: flex;
     width: 980px;
@@ -35,12 +49,46 @@ body {
     border: 10px solid #3498db00;
 }
 
-.settings{
-    cursor: pointer;
+.settings-button{
+            cursor: pointer;
+            background-image:url(https://avatars.mds.yandex.net/i?id=a702f8c6abb4b612f97c73285235f29f1285d517-10340180-images-thumbs&ref=rim&n=33&w=330&h=330);
+            background-size: cover;
+            background-position: center;
+            width: 10%;
+            height: auto;
 }
 
-.settings:hover {
-    color: #34495e;
+.settings-button:hover {
+            color: #34495e;
+            background-image:url(https://avatars.mds.yandex.net/i?id=de1ee37d7eda175e0be16fc3c7dc634027e0be87-8496986-images-thumbs&n=13);
+            background-size: cover;
+            background-position: center;
+            width: 10%;
+            height: auto;
+}
+
+.settings-menu{
+            margin:10px;
+            display: none;
+            width: 200px;
+            background: #007056;
+            color: white;
+            border-radius: 8px;
+            padding: 10px;
+            height: 600px;
+            flex-shrink: 0;
+}
+
+.settings-menu.active {
+            display: block;
+}
+
+.settings-menu h1{
+            display: grid;
+            place-items: center;
+            width: 200px;
+            margin-bottom: auto;
+            font-size: 90%;
 }
 
 .status-bar {
