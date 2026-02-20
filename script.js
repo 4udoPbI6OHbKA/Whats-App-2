@@ -137,22 +137,36 @@ function sendMessage() {
     messageInput.value = '';
 }
 
-function addMessage(data, isOwn) {
+window.addMessage = function(data, isOwn) {
+    const messagesDiv = document.getElementById('messages');
     if (!messagesDiv) return;
     
-    console.log('Добавляем сообщение:', data, 'Своё:', isOwn);
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isOwn ? 'own' : 'their'}`;
+
+    // Определяем класс для длинных сообщений
+    const isLongMessage = data.text.length > 50;
     
-    const messageElement = document.createElement('div');
-    messageElement.className = `message ${isOwn ? 'own' : 'their'}`;
-    
-    // Используем senderName для отображения
-    const displayName = data.senderName || 'Неизвестный';
-    
-    messageElement.innerHTML = `<b>${displayName}</b> (${data.time})<br>${data.text}`;
-    messagesDiv.appendChild(messageElement);
-    
+    messageDiv.innerHTML = `
+        <div class="message-header-row">
+            <div class="message-sender">${data.senderName}</div>
+            <div class="message-time">${data.time}</div>
+        </div>
+        <div class="message-bubble ${isLongMessage ? 'long-message' : ''}">
+            ${data.text}
+        </div>
+    `;
+
+    messagesDiv.appendChild(messageDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
+    
+    // Автопрокрутка с анимацией
+    messagesDiv.scrollTo({
+        top: messagesDiv.scrollHeight,
+        behavior: 'smooth'
+    });
+};
+
 
 // Подключаем обработчик Enter
 if (messageInput) {

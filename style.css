@@ -283,3 +283,92 @@ body {
 #connection-status.waiting {
     color: #f39c12 !important;
 }
+
+/* Обновленные стили для сообщений */
+.messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f9f9f9;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+    max-width: 80%;
+    animation: fadeIn 0.3s ease;
+}
+
+.message-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+    width: 100%;
+}
+
+.message-sender {
+    font-size: 12px;
+    font-weight: 600;
+    color: #667781;
+}
+
+.message.own .message-sender {
+    color: #2980b9;
+}
+
+.message-time {
+    font-size: 11px;
+    color: #919191;
+}
+
+.message.own .message-time {
+    color: #e8f5e8;
+}
+
+.message-bubble {
+    padding: 10px 14px;
+    border-radius: 18px;
+    word-wrap: break-word;
+    line-height: 1.4;
+    position: relative;
+    max-width: 100%;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.message.their .message-bubble {
+    background: #e5e5ea;
+    color: #000;
+    border-bottom-left-radius: 4px;
+}
+
+.message.own .message-bubble {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+}
+
+.message.their {
+    align-self: flex-start;
+}
+
+.message.own {
+    align-self: flex-end;
+}
+
+/* Адаптивность пузыря */
+.message-bubble {
+    min-height: 20px;
+    max-width: 100%;
+}
+
+.long-message .message-bubble {
+    max-width: 90%;
+    white-space: pre-wrap;
+}
