@@ -284,7 +284,7 @@ body {
     color: #f39c12 !important;
 }
 
-/* Исправленные стили - ОДИН пузырь */
+/* Сообщения БЕЗ границ между элементами */
 .messages {
     flex: 1;
     padding: 15px;
@@ -315,9 +315,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 4px;
+    margin-bottom: 0; /* ✅ УБРАНА граница сверху */
+    padding: 0 16px 2px 16px; /* ✅ Минимальный отступ снизу */
     width: 100%;
-    padding: 0 4px;
 }
 
 .message-sender {
@@ -346,9 +346,9 @@ body {
     line-height: 1.4;
     position: relative;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    /* Адаптивная ширина */
     max-width: 100%;
     min-height: 20px;
+    margin-top: -4px; /* ✅ Поднимаем пузырь к заголовку */
 }
 
 .message.their .message-bubble {
