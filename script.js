@@ -143,14 +143,14 @@ window.addMessage = function(data, isOwn) {
     
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${isOwn ? 'own' : 'their'}`;
-
-    // Определяем класс для длинных сообщений
-    const isLongMessage = data.text.length > 50;
+    
+    // Проверяем длину для длинных сообщений
+    const isLongMessage = data.text.length > 60;
     
     messageDiv.innerHTML = `
         <div class="message-header-row">
-            <div class="message-sender">${data.senderName}</div>
-            <div class="message-time">${data.time}</div>
+            <span class="message-sender">${data.senderName}</span>
+            <span class="message-time">${data.time}</span>
         </div>
         <div class="message-bubble ${isLongMessage ? 'long-message' : ''}">
             ${data.text}
@@ -158,14 +158,13 @@ window.addMessage = function(data, isOwn) {
     `;
 
     messagesDiv.appendChild(messageDiv);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
     
-    // Автопрокрутка с анимацией
-    messagesDiv.scrollTo({
-        top: messagesDiv.scrollHeight,
-        behavior: 'smooth'
-    });
+    // Плавная прокрутка вниз
+    setTimeout(() => {
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }, 10);
 };
+
 
 
 // Подключаем обработчик Enter
